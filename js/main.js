@@ -6,7 +6,8 @@ var init = function () {
     console.log('init() called');
     $(".text1").html('XXXXXXXXXXXXXX');
     $(".mypanel").html('XXXXXXX');
-    parseJson2();
+    //parseJson();
+    readFile();
     document.addEventListener('visibilitychange', function() {
         if(document.hidden){
             // Something you want to do when hide or exit.
@@ -66,7 +67,32 @@ function parseJson2() {
     hr.send(null);
     //$(".mypanel").html("processing...6");
 }
+function Get(yourUrl){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",yourUrl,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;          
+}
+/*function getJSONP(url, success) {
 
+    var ud = '_' + +new Date,
+        script = document.createElement('script'),
+        head = document.getElementsByTagName('head')[0] 
+               || document.documentElement;
+
+    window[ud] = function(data) {
+        head.removeChild(script);
+        success && success(data);
+    };
+
+    script.src = url.replace('callback=?', 'callback=' + ud);
+    head.appendChild(script);
+    //$(".mypanel").html(data);
+}
+
+getJSONP('http://time.jsontest.com', function(data){
+    console.log(data);
+});  */
 function parseJson() {
 	var obj = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
 	document.getElementById('text1').innerHTML=obj.name + ", " + obj.age;
@@ -95,4 +121,67 @@ function checkTime(i) {
         i='0' + i;
     }
     return i;
+}
+
+function parseDOM(text){
+	const items = text.querySelectorAll("item");
+    let html = '';
+    items.forEach(function(el) {
+    	console.log( el);
+    	//console.log(el.getElementsByTagName('enclosure')[0].getAttribute("url"));
+    	var enclDOM = el.getElementsByTagName('enclosure')[0];
+    	var imgUrl = '';
+    	if(enclDOM != null){
+    		imgUrl = el.getElementsByTagName('enclosure')[0].getAttribute("url");
+    	}
+      html += '' +
+        '<article>' +
+          '<img src="' + imgUrl + '" alt="">'+
+          '<h2>' +
+            '<a href="' + el.getElementsByTagName('link')[0].innerHTML + '" target="_blank" rel="noopener">' +
+               el.getElementsByTagName('title')[0].innerHTML +
+            '</a>' +
+          '</h2>' +
+        '</article>' +
+      '';
+     
+    });
+    $(".text1").html(html);
+    console.log( html);
+}
+
+function getDOM(text){
+    var str = new window.DOMParser().parseFromString(text, "text/xml");
+    return str;
+    //console.log( str);
+}
+
+function readFile(){
+	var textFolder = "wgt-package/data";
+	var helloWorld = "helloworld.txt";
+	function onsuccess(files) {
+	    for (var i = 0; i < files.length; i++) {
+	        if (files[i].name == helloWorld) {
+	            files[i].openStream("r", function(fs) {
+	                var text = fs.read(files[i].fileSize);
+	                fs.close();
+	                parseDOM(getDOM(text));
+	            }, function(e) {
+	                console.log("Error " + e.message);
+	            }, "UTF-8");
+	            break;
+	        }
+	    }
+	}
+
+	    function onerror(error) {
+	    console.log("The error " + error.message
+	            + " occurred when listing the files in " + textFolder);
+	}
+
+	tizen.filesystem.resolve(textFolder, function(dir) {
+	        dir.listFiles(onsuccess, onerror);
+	    }, function(e) {
+	        console.log("Error" + e.message);
+	    }, "r"); // make sure to use 'r' mode as 'wgt-package' is read-only folder
 }

@@ -8,5 +8,8 @@
     <tizen:profile name="tv-samsung"/>
     <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
     <tizen:privilege name="http://tizen.org/privilege/internet"/>
-<access origin="*" subdomains="true"></access>
+    <tizen:privilege name="http://tizen.org/privilege/network.get"/>
+    <tizen:privilege name="http://tizen.org/privilege/filesystem.read"/>
+	<tizen:privilege name="http://tizen.org/privilege/filesystem.write"/>
+	<access origin="*" subdomains="true"></access>
 </widget>

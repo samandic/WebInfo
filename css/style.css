@@ -73,3 +73,9 @@ footer p {
     color: #888;
     margin-top: 30px;
 }
+
+.tm-media-body {
+    border: 1px solid #ccc;
+    padding: 17px 25px;
+    max-width: 600px;
+}
