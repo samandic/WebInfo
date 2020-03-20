@@ -73,6 +73,10 @@ footer p {
     color: #888;
     margin-top: 30px;
 }
+.tm-text-white { color: white; }
+.tm-text-green { color: #009999; }
+.tm-text-light-green { color: #99ffff; }
+.tm-text-blue { color: #0099cc; }
 
 .tm-media-body {
     border: 1px solid #ccc;
